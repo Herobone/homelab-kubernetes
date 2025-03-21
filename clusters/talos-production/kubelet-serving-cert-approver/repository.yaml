@@ -1,0 +1,10 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: GitRepository
+metadata:
+  name: kubelet-serving-cert-approver
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  url: https://github.com/alex1989hu/kubelet-serving-cert-approver
+  ref:
+    branch: main
