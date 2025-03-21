@@ -35,6 +35,11 @@ hubble:
     enabled: true
   ui:
     enabled: true
+    ingress:
+      enabled: true
+      className: cilium
+      hosts:
+        - hubble.cilium.ottercloud.net
     # service:
       # annotations:
       #   omni-kube-service-exposer.sidero.dev/port: "50080"
