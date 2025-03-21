@@ -9,8 +9,11 @@ logs:
 ports:
   web:
     # Permanent Redirect to HTTPS
-    redirectTo:
-      port: websecure
+    redirections:
+      entryPoint:
+        to: websecure
+        scheme: https
+        permanent: true
   websecure:
     tls:
       enabled: true
@@ -26,6 +29,17 @@ ports:
       enabled: true
     tls:
       enabled: true
+
+deployment:
+  replicas: null
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "50Mi"
+  limits:
+    cpu: "300m"
+    memory: "150Mi"
 
 autoscaling:
   enabled: true
