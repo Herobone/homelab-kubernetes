@@ -31,15 +31,15 @@ ports:
       enabled: true
 
 deployment:
-  replicas: 1
+  replicas: 2
 
-# resources:
-#   requests:
-#     cpu: "100m"
-#     memory: "50Mi"
-#   limits:
-#     cpu: "300m"
-#     memory: "150Mi"
+resources:
+  requests:
+    cpu: "100m"
+    memory: "50Mi"
+  limits:
+    cpu: "300m"
+    memory: "150Mi"
 
 # autoscaling:
 #   enabled: true
