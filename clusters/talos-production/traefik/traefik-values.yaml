@@ -1,0 +1,54 @@
+# additionalArguments:
+
+logs:
+  general:
+    level: DEBUG
+  access:
+    enabled: true
+
+ports:
+  web:
+    # Permanent Redirect to HTTPS
+    redirectTo:
+      port: websecure
+  websecure:
+    tls:
+      enabled: true
+    http3:
+      enabled: true
+  external:
+    port: 9443
+    expose:
+      default: true
+    exposedPort: 9443
+    protocol: TCP
+    http3:
+      enabled: true
+    tls:
+      enabled: true
+
+autoscaling:
+  enabled: true
+
+providers:
+  kubernetesCRD:
+    enabled: true
+    allowCrossNamespace: true
+
+# Dashboard
+ingressRoute:
+  dashboard:
+    enabled: true
+    entryPoints:
+      - websecure
+    matchRule: Host(`traefik.new.ottercloud.net`)
+    # middlewares:
+    #   - name: authentik
+    #     namespace: authentik
+    tls:
+      secretName: traefik-dashboard-cert
+
+# Set Traefik as your default Ingress Controller, according to Kubernetes 1.19+ changes.
+ingressClass:
+  enabled: true
+  isDefaultClass: true
