@@ -5,6 +5,9 @@ resources:
   - namespace.yaml
   - repository.yaml
   - release.yaml
+  - cloudflare-credentials.yaml
+  - clusterissuer-letsencrypt-prod.yaml
+  - clusterissuer-letsencrypt-staging.yaml
 configMapGenerator:
   - name: cert-manager-values
     files:
