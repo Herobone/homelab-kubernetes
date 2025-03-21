@@ -73,3 +73,7 @@ ingressRoute:
 # Set Traefik as your default Ingress Controller, according to Kubernetes 1.19+ changes.
 ingressClass:
   enabled: true
+
+service:
+  labels:
+    cilium-lb-pool: apps-pool
