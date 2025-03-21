@@ -35,7 +35,7 @@ hubble:
     enabled: true
   ui:
     enabled: true
-    service:
+    # service:
       # annotations:
       #   omni-kube-service-exposer.sidero.dev/port: "50080"
       #   omni-kube-service-exposer.sidero.dev/label: Hubble
