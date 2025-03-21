@@ -1,0 +1,29 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    # Configure your email here...
+    # ---
+    email: admin@ottercloud.net
+
+    # ---
+    # Letsencrypt Production
+    server: https://acme-v02.api.letsencrypt.org/directory
+    # skipTLSVerify: true
+    privateKeySecretRef:
+      name: letsencrypt-prod-private-key
+    solvers:
+      # Configure DNS or HTTP Challenge here...
+      # ---
+      # DNS Challenge:
+      - dns01:
+          # Configure your DNS Provider here...
+          # ---
+          cloudflare:
+            email: "admin@ottercloud.net"
+            # API Token:
+            apiTokenSecretRef:
+              name: cloudflare-credentials
+              key: api-token
