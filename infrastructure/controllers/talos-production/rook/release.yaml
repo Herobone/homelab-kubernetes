@@ -1,14 +1,14 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: rook-ceph-cluster
+  name: rook-ceph
   namespace: rook-ceph
 spec:
   interval: 10m
-  releaseName: rook-ceph-cluster
+  releaseName: rook-ceph
   chart:
     spec:
-      chart: rook-ceph-cluster
+      chart: rook-ceph
       sourceRef:
         kind: HelmRepository
         name: rook-release
