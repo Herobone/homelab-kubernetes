@@ -1,0 +1,9 @@
+ingress:
+  dashboard:
+    host: 
+      name: rook.cilium.ottercloud.net
+    tls:
+      - hosts:
+          - rook.cilium.ottercloud.net
+        secretName: rook-dashboard-tls-cert
+    ingressClass: cilium
