@@ -2,8 +2,32 @@ ingress:
   dashboard:
     host: 
       name: rook.cilium.ottercloud.net
+      path: "/ceph-dashboard(/|$)(.*)"
+      pathType: Prefix
     tls:
       - hosts:
           - rook.cilium.ottercloud.net
         secretName: rook-dashboard-tls-cert
     ingressClass: cilium
+
+toolbox:
+  enabled: true
+
+cephClusterSpec:
+  resources:
+    osd:
+      requests:
+        memory: 512Mi
+        cpu: 250m
+    mds:
+      requests:
+        memory: 256Mi
+        cpu: 200m
+    mon:
+      requests:
+        memory: 256Mi
+        cpu: 200m
+    mgr:
+      requests:
+        memory: 128Mi
+        cpu: 150m
