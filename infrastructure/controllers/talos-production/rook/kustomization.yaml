@@ -5,8 +5,12 @@ resources:
   - namespace.yaml
   - repository.yaml
   - release.yaml
+  - cluster-release.yaml
   - cert-prod.yaml
 configMapGenerator:
+  - name: rook-cluster-values
+    files:
+      - values.yaml=rook-cluster-values.yaml
   - name: rook-values
     files:
       - values.yaml=rook-values.yaml
