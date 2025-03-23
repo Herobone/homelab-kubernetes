@@ -120,31 +120,31 @@ imagePullSecrets: []
 
 # -- Probe for liveness of the Open WebUI container
 # ref: <https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes>
-livenessProbe:
-  httpGet:
-    path: /health
-    port: http
-  failureThreshold: 1
-  periodSeconds: 10
+# livenessProbe:
+#   httpGet:
+#     path: /health
+#     port: http
+#   failureThreshold: 1
+#   periodSeconds: 10
 
 # -- Probe for readiness of the Open WebUI container
 # ref: <https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes>
-readinessProbe:
-  httpGet:
-    path: /health/db
-    port: http
-  failureThreshold: 1
-  periodSeconds: 10
+# readinessProbe:
+#   httpGet:
+#     path: /health/db
+#     port: http
+#   failureThreshold: 1
+#   periodSeconds: 10
 
 # -- Probe for startup of the Open WebUI container
 # ref: <https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes>
-startupProbe:
-  httpGet:
-    path: /health
-    port: http
-  initialDelaySeconds: 30
-  periodSeconds: 5
-  failureThreshold: 20
+# startupProbe:
+#   httpGet:
+#     path: /health
+#     port: http
+#   initialDelaySeconds: 30
+#   periodSeconds: 5
+#   failureThreshold: 20
 
 resources: {}
 
@@ -164,7 +164,7 @@ ingress:
   #   nginx.ingress.kubernetes.io/permanent-redirect: "https://chat.example.com"
   #   networking.gke.io/managed-certificates: "mydomain-chat-cert"
   #   # nginx.ingress.kubernetes.io/rewrite-target: / 
-  host: "chat.ottercloud.net"  # update to your real domain 
+  host: "chat.cilium.ottercloud.net"  # update to your real domain 
   tls: true
   existingSecret: "openwebui-tls-cert"
 persistence:
