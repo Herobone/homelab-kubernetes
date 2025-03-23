@@ -4,7 +4,7 @@ ollama:
 
 pipelines:
   # -- Automatically install Pipelines chart to extend Open WebUI functionality using Pipelines: https://github.com/open-webui/pipelines
-  enabled: false
+  enabled: true
   # -- This section can be used to pass required environment variables to your pipelines (e.g. Langfuse hostname)
   extraEnvVars: []
 
@@ -216,6 +216,11 @@ extraEnvVars:
       secretKeyRef:
         name: ai-credentials
         key: openai_api_key
+  - name: WEBUI_SECRET_KEY
+    valueFrom:
+      secretKeyRef:
+        name: ai-credentials
+        key: webui_secret_key
   # - name: OLLAMA_DEBUG
   #   value: "1"
 
