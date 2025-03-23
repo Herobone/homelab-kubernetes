@@ -19,10 +19,6 @@ cephClusterSpec:
       requests:
         memory: 512Mi
         cpu: 250m
-    mds:
-      requests:
-        memory: 256Mi
-        cpu: 200m
     mon:
       requests:
         memory: 256Mi
@@ -31,3 +27,113 @@ cephClusterSpec:
       requests:
         memory: 128Mi
         cpu: 150m
+  
+  removeOSDsIfOutAndSafeToRemove: true
+
+cephFileSystems:
+  - name: ceph-filesystem
+    spec:
+      metadataPool:
+        replicated:
+          size: 3
+      dataPools:
+        - failureDomain: host
+          replicated:
+            size: 3
+          # Optional and highly recommended, 'data0' by default, see https://github.com/rook/rook/blob/v1.16.5/Documentation/CRDs/Shared-Filesystem/ceph-filesystem-crd.md#pools
+          name: data0
+      metadataServer:
+        activeCount: 1
+        activeStandby: true
+        resources:
+          limits:
+            memory: "4Gi"
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+        priorityClassName: system-cluster-critical
+    storageClass:
+      enabled: true
+      isDefault: false
+      name: ceph-filesystem
+      # (Optional) specify a data pool to use, must be the name of one of the data pools above, 'data0' by default
+      pool: data0
+      reclaimPolicy: Delete
+      allowVolumeExpansion: true
+      volumeBindingMode: "Immediate"
+      annotations: {}
+      labels: {}
+      mountOptions: []
+      # see https://github.com/rook/rook/blob/v1.16.5/Documentation/Storage-Configuration/Shared-Filesystem-CephFS/filesystem-storage.md#provision-storage for available configuration
+      parameters:
+        # The secrets contain Ceph admin credentials.
+        csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
+        csi.storage.k8s.io/provisioner-secret-namespace: "rook-ceph"
+        csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner
+        csi.storage.k8s.io/controller-expand-secret-namespace: "rook-ceph"
+        csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
+        csi.storage.k8s.io/node-stage-secret-namespace: "rook-ceph"
+        # Specify the filesystem type of the volume. If not specified, csi-provisioner
+        # will set default as `ext4`. Note that `xfs` is not recommended due to potential deadlock
+        # in hyperconverged settings where the volume is mounted on the same node as the osds.
+        csi.storage.k8s.io/fstype: ext4
+    
+cephObjectStores:
+  - name: ceph-objectstore
+    # see https://github.com/rook/rook/blob/v1.16.5/Documentation/CRDs/Object-Storage/ceph-object-store-crd.md#object-store-settings for available configuration
+    spec:
+      metadataPool:
+        failureDomain: host
+        replicated:
+          size: 3
+      dataPool:
+        failureDomain: host
+        erasureCoded:
+          dataChunks: 2
+          codingChunks: 1
+        parameters:
+          bulk: "true"
+      preservePoolsOnDelete: true
+      gateway:
+        port: 80
+        resources:
+          limits:
+            memory: "2Gi"
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+        # securePort: 443
+        # sslCertificateRef:
+        instances: 1
+        priorityClassName: system-cluster-critical
+        opsLogSidecar:
+          resources:
+            limits:
+              memory: "100Mi"
+            requests:
+              cpu: "100m"
+              memory: "40Mi"
+    storageClass:
+      enabled: true
+      name: ceph-bucket
+      reclaimPolicy: Delete
+      volumeBindingMode: "Immediate"
+      annotations: {}
+      labels: {}
+      # see https://github.com/rook/rook/blob/v1.16.5/Documentation/Storage-Configuration/Object-Storage-RGW/ceph-object-bucket-claim.md#storageclass for available configuration
+      parameters:
+        # note: objectStoreNamespace and objectStoreName are configured by the chart
+        region: eu-west-1
+    ingress:
+      # Enable an ingress for the ceph-objectstore
+      enabled: false
+      # annotations: {}
+      # host:
+      #   name: objectstore.example.com
+      #   path: /
+      #   pathType: Prefix
+      # tls:
+      # - hosts:
+      #     - objectstore.example.com
+      #   secretName: ceph-objectstore-tls
+      # ingressClassName: nginx

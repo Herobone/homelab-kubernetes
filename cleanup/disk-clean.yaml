@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: disk-clean-3
+spec:
+  restartPolicy: Never
+  nodeName: talos-2wy-r8a
+  volumes:
+  - name: rook-data-dir
+    hostPath:
+      path: /var/lib/rook
+  containers:
+  - name: disk-clean
+    image: busybox
+    securityContext:
+      privileged: true
+    volumeMounts:
+    - name: rook-data-dir
+      mountPath: /node/rook-data
+    command: ["/bin/sh", "-c", "rm -rf /node/rook-data/*"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: disk-clean-4
+spec:
+  restartPolicy: Never
+  nodeName: talos-7lq-e0y
+  volumes:
+  - name: rook-data-dir
+    hostPath:
+      path: /var/lib/rook
+  containers:
+  - name: disk-clean
+    image: busybox
+    securityContext:
+      privileged: true
+    volumeMounts:
+    - name: rook-data-dir
+      mountPath: /node/rook-data
+    command: ["/bin/sh", "-c", "rm -rf /node/rook-data/*"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: disk-clean-5
+spec:
+  restartPolicy: Never
+  nodeName: talos-j2u-mvd
+  volumes:
+  - name: rook-data-dir
+    hostPath:
+      path: /var/lib/rook
+  containers:
+  - name: disk-clean
+    image: busybox
+    securityContext:
+      privileged: true
+    volumeMounts:
+    - name: rook-data-dir
+      mountPath: /node/rook-data
+    command: ["/bin/sh", "-c", "rm -rf /node/rook-data/*"]
