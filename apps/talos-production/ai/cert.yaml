@@ -1,0 +1,27 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: openwebui-tls-cert
+  namespace: ai
+spec:
+  secretName: openwebui-tls-cert
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - chat.ottercloud.net
+    - chat.cilium.ottercloud.net
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: litellm-tls-cert
+  namespace: ai
+spec:
+  secretName: litellm-tls-cert
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - litellm.ottercloud.net
+    - litellm.cilium.ottercloud.net
