@@ -5,11 +5,15 @@ resources:
   - namespace.yaml
   - repository.yaml
   - open-webui-release.yaml
+  - litellm-release.yaml
   - secrets.yaml
   - cert.yaml
 configMapGenerator:
   - name: open-webui-values
     files:
       - values.yaml=openwebui-values.yaml
+  - name: litellm-values
+    files:
+      - values.yaml=litellm-values.yaml
 configurations:
   - kustomizeconfig.yaml

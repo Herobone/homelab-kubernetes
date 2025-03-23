@@ -6,3 +6,13 @@ metadata:
 spec:
   interval: 1m
   url: https://helm.openwebui.com
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: litellm
+  namespace: default
+spec:
+  type: "oci"
+  interval: 5m0s
+  url: oci://ghcr.io/berriai/litellm-helm

@@ -1,0 +1,17 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: litellm
+  namespace: ai
+spec:
+  interval: 10m
+  releaseName: litellm
+  chart:
+    spec:
+      chart: litellm-helm
+      sourceRef:
+        kind: HelmRepository
+        name: litellm
+  valuesFrom:
+    - kind: ConfigMap
+      name: litellm-values
