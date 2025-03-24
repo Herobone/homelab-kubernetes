@@ -24,13 +24,13 @@ podLabels: {}
 # At the time of writing, the litellm docker image requires write access to the
 #  filesystem on startup so that prisma can install some dependencies.
 podSecurityContext: {}
-securityContext: 
-  capabilities:
-    drop:
-      - ALL
-  readOnlyRootFilesystem: false
-  runAsNonRoot: true
-  runAsUser: 1000
+# securityContext: 
+#   capabilities:
+#     drop:
+#       - ALL
+#   readOnlyRootFilesystem: false
+#   runAsNonRoot: true
+#   runAsUser: 1000
 
 # Default environment variables for the proxy. They are put into the environment configMap.
 env:
