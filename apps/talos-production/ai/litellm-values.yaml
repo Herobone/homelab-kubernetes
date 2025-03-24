@@ -34,31 +34,15 @@ securityContext:
 
 # Default environment variables for the proxy. They are put into the environment configMap.
 env:
-  - LITELLM_LOG: "ERROR"
-  - LITELLM_MODE: "PRODUCTION"
+  LITELLM_LOG: "ERROR"
+  LITELLM_MODE: "PRODUCTION"
 
-  - DATABASE_USERNAME:
-    valueFrom:
-      secretKeyRef:
-        name: litellm-db-creds
-        key: username
 
-  - DATABASE_HOST: litellm-db-production-cnpg-v1-rw.ai.svc.cluster.local
-  - DATABASE_NAME: litellm
+  DATABASE_USERNAME: litellm
+  DATABASE_HOST: litellm-db-production-cnpg-v1-rw.ai.svc.cluster.local
+  DATABASE_NAME: litellm
 
-  - DATABASE_PASSWORD:
-    valueFrom:
-      secretKeyRef:
-        name: litellm-db-creds
-        key: password
-
-  - REDIS_HOST: valkey-litellm.ai.svc.cluster.local
-
-  - PROXY_MASTER_KEY:
-    valueFrom:
-      secretKeyRef:
-        name: ai-credentials
-        key: litellm_master_key
+  REDIS_HOST: valkey-litellm.ai.svc.cluster.local
 
 # This is for setting up a secret to be used as environment variables for the proxy
 # Provide this list via secrets:
@@ -67,11 +51,11 @@ env:
 #   REDIS_PASSWORD:
 #   SLACK_WEBHOOK_URL: # only if you have Slack alerts enabled
 # When needing more than one secret, use the envFromSecretRefs list below
-secretFrom: {}
-  # name: ""
+secretFrom:
+  name: litellm-env
 
 # -- List of secrets to be used as environment variables for the proxy
-envFromSecretRefs: []
+envFromSecretRefs:
 
 # -- List of extra objects to be created, will be templated
 extraObjects: []
