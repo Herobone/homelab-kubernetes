@@ -34,7 +34,7 @@ podSecurityContext: {}
 
 # Default environment variables for the proxy. They are put into the environment configMap.
 env:
-  LITELLM_LOG: "ERROR"
+  LITELLM_LOG: "INFO"
   LITELLM_MODE: "PRODUCTION"
 
 
