@@ -8,10 +8,10 @@ spec:
   releaseName: litellm
   chart:
     spec:
-      chart: unique
+      chart: litellm
       sourceRef:
         kind: HelmRepository
-        name: litellm
+        name: unique
   valuesFrom:
     - kind: ConfigMap
       name: litellm-values
