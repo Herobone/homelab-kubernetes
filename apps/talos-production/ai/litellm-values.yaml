@@ -65,8 +65,8 @@ service:
   port: 4000
 
 ingress:
-  enabled: false
-  className: ""
+  enabled: true
+  className: cilium
   annotations: {}
   hosts:
     - host: litellm.cilium.ottercloud.net
@@ -126,28 +126,28 @@ affinity: {}
 # The elements within proxy_config are rendered as config.yaml for the proxy
 #  Examples: https://github.com/BerriAI/litellm/tree/main/litellm/proxy/example_config_yaml
 #  Reference: https://docs.litellm.ai/docs/proxy/configs
-# proxy_config:
-#   model_list:
-#     # At least one model must exist for the proxy to start.
-#     - model_name: fake-openai-endpoint
-#       litellm_params:
-#         model: openai/fake
-#         api_key: fake-key
-#         api_base: https://exampleopenaiendpoint-production.up.railway.app/
-#   general_settings:
-#     master_key: os.environ/PROXY_MASTER_KEY # The master key is added as an environment variable via the secretFrom block
-#     alerting: []
-#     proxy_batch_write_at: 60 # Batch write spend updates every 60s
-#     database_connection_pool_limit: 10 # limit the number of database connections to = MAX Number of DB Connections/Number of instances of litellm proxy (Around 10-20 is good number)
+proxy_config:
+  model_list:
+    # At least one model must exist for the proxy to start.
+    - model_name: o1-mini
+      litellm_params:
+        model: openai/o1-mini
+        api_key: "os.environ/OPENAI_API_KEY"
+        api_base: https://api.openai.com/v1
+  general_settings:
+    master_key: os.environ/PROXY_MASTER_KEY # The master key is added as an environment variable via the secretFrom block
+    alerting: []
+    proxy_batch_write_at: 60 # Batch write spend updates every 60s
+    database_connection_pool_limit: 10 # limit the number of database connections to = MAX Number of DB Connections/Number of instances of litellm proxy (Around 10-20 is good number)
 
-#     # OPTIONAL Best Practices
-#     disable_spend_logs: False # Disable when you use Prometheus metrics
-#     disable_error_logs: False # Disable to improve performance
+    # OPTIONAL Best Practices
+    disable_spend_logs: False # Disable when you use Prometheus metrics
+    disable_error_logs: False # Disable to improve performance
 
-#   litellm_settings:
-#     request_timeout: 600    # raise Timeout error if call takes longer than 600 seconds. Default value is 6000seconds if not set
-#     set_verbose: False      # Switch off Debug Logging, ensure your logs do not have any debugging on
-#     json_logs: true         # Get debug logs in json format
+  litellm_settings:
+    request_timeout: 600    # raise Timeout error if call takes longer than 600 seconds. Default value is 6000seconds if not set
+    set_verbose: False      # Switch off Debug Logging, ensure your logs do not have any debugging on
+    json_logs: true         # Get debug logs in json format
 
 hooks:
   migration:
