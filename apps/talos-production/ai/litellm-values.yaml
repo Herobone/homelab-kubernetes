@@ -42,7 +42,7 @@ env:
   DATABASE_HOST: litellm-db-production-cnpg-v1-rw.ai.svc.cluster.local
   DATABASE_NAME: litellm
 
-  REDIS_HOST: valkey-litellm.ai.svc.cluster.local
+  REDIS_HOST: valkey-litellm-primary.ai.svc.cluster.local
 
 # This is for setting up a secret to be used as environment variables for the proxy
 # Provide this list via secrets:
