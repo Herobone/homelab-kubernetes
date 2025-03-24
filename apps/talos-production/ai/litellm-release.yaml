@@ -8,7 +8,7 @@ spec:
   releaseName: litellm
   chart:
     spec:
-      chart: litellm-helm
+      chart: unique
       sourceRef:
         kind: HelmRepository
         name: litellm

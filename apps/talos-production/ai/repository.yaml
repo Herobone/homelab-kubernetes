@@ -10,9 +10,8 @@ spec:
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: litellm
+  name: unique
   namespace: default
 spec:
-  type: "oci"
   interval: 5m0s
-  url: oci://ghcr.io/berriai/litellm-helm
+  url: https://unique-ag.github.io/helm-charts/

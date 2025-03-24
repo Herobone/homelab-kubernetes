@@ -1,0 +1,84 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: litellm-db-production-cnpg-v1
+  namespace: ai
+spec:
+  description: Postgres cluster for the litellm application
+  imageName: ghcr.io/cloudnative-pg/postgresql:17-standard-bookworm
+  instances: 3
+
+  monitoring:
+    enablePodMonitor: true
+
+  inheritedMetadata:
+    labels:
+      app: litellm-database
+      policy-type: "database"
+
+  storage:
+    size: 25Gi
+
+  bootstrap:
+    # recovery:
+      # source: clusterBackup
+
+    initdb:
+      database: litellm
+      owner: litellm
+
+      secret:
+        name: litellm-db-creds
+
+  externalClusters:
+    - name: clusterBackup
+      barmanObjectStore:
+        endpointURL: https://nbg1.your-objectstorage.com
+        destinationPath: s3://litellm-db-backup/
+        serverName: litellm-db-production-cnpg-v1
+        s3Credentials:
+          accessKeyId:
+            name: minio-creds
+            key: MINIO_ACCESS_KEY
+          secretAccessKey:
+            name: minio-creds
+            key: MINIO_SECRET_KEY
+
+  backup:
+    barmanObjectStore:
+      endpointURL: https://nbg1.your-objectstorage.com
+      destinationPath: s3://litellm-db-backup/
+      s3Credentials:
+        accessKeyId:
+          name: minio-creds
+          key: MINIO_ACCESS_KEY
+        secretAccessKey:
+          name: minio-creds
+          key: MINIO_SECRET_KEY
+      wal:
+        compression: gzip
+      data:
+        compression: gzip
+    retentionPolicy: 30d
+
+  # handy: resources can be used to trigger a redeploy
+  resources:
+    requests:
+      memory: 600Mi
+
+  managed:
+    services:
+      disabledDefaultServices:
+        - ro
+        - r
+      # additional:
+      #   - selectorType: rw
+      #     serviceTemplate:
+      #       metadata:
+      #         name: litellm-db-lb
+      #         labels:
+      #           cilium-lb-pool: postgres-pool
+      #         annotations:
+      #           external-dns.alpha.kubernetes.io/hostname: litellm-db.cilium.ottercloud.net
+      #       spec:
+      #         type: LoadBalancer
