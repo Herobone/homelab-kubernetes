@@ -5,3 +5,4 @@ resources:
   - cert-manager
   - kubelet-serving-cert-approver
   - metrics-server
+  - cloudnativepg
