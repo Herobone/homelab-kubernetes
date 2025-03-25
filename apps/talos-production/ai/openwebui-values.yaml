@@ -211,11 +211,7 @@ extraEnvVars:
   #   secretKeyRef:
   #     name: pipelines-api-key
   #     key: api-key
-  - name: OPENAI_API_KEY
-    valueFrom:
-      secretKeyRef:
-        name: ai-credentials
-        key: openai_api_key
+
   - name: WEBUI_SECRET_KEY
     valueFrom:
       secretKeyRef:

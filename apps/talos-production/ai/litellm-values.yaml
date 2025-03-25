@@ -44,6 +44,8 @@ env:
 
   REDIS_HOST: valkey-litellm-primary.ai.svc.cluster.local
 
+  STORE_MODEL_IN_DB: True
+
 # This is for setting up a secret to be used as environment variables for the proxy
 # Provide this list via secrets:
 #   PROXY_MASTER_KEY:
@@ -124,13 +126,7 @@ affinity: {}
 #  Examples: https://github.com/BerriAI/litellm/tree/main/litellm/proxy/example_config_yaml
 #  Reference: https://docs.litellm.ai/docs/proxy/configs
 proxy_config:
-  model_list:
-    # At least one model must exist for the proxy to start.
-    - model_name: o1-mini
-      litellm_params:
-        model: openai/o1-mini
-        api_key: "os.environ/OPENAI_API_KEY"
-        api_base: https://api.openai.com/v1
+  model_list: []
   general_settings:
     master_key: os.environ/PROXY_MASTER_KEY # The master key is added as an environment variable via the secretFrom block
     alerting: []
