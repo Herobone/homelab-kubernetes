@@ -124,6 +124,9 @@ global:
           secretKeyRef:
             name: authentik-credentials
             key: authentik_secret
+    
+    - name: AUTHENTIK_REDIS__DB
+      value: "1"
 
 geoip:
   enabled: true
