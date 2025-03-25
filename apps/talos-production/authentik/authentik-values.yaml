@@ -1,0 +1,130 @@
+authentik:
+  # This sends anonymous usage-data, stack traces on errors and
+  # performance data to sentry.io, and is fully opt-in
+  error_reporting:
+    enabled: false
+
+server:
+  ingress:
+    enabled: true
+    # Specify kubernetes ingress controller class name
+    ingressClassName: cilium
+    hosts:
+      - auth.ottercloud.net
+    tls:
+      - secretName: authentik-tls
+        hosts:
+          - auth.ottercloud.net
+          
+  autoscaling:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 3
+
+  service:
+    servicePortHttp: 9000
+    servicePortHttps: 9443
+
+global:
+  env:
+    - name: AUTHENTIK_EMAIL__HOST
+      valueFrom:
+          secretKeyRef:
+            name: authentik-credentials
+            key: mail_host
+    - name: AUTHENTIK_EMAIL__PORT
+      valueFrom:
+          secretKeyRef:
+            name: authentik-credentials
+            key: mail_port
+    # -- SMTP credentials. When left empty, no authentication will be done.
+    - name: AUTHENTIK_EMAIL__USERNAME
+      valueFrom:
+          secretKeyRef:
+            name: authentik-credentials
+            key: mail_user
+    # -- SMTP credentials. When left empty, no authentication will be done.
+    - name: AUTHENTIK_EMAIL__PASSWORD
+      valueFrom:
+          secretKeyRef:
+            name: authentik-credentials
+            key: mail_password
+    # -- Enable either use_tls or use_ssl. They can't be enabled at the same time.
+    - name: AUTHENTIK_EMAIL__USE_TLS
+      valueFrom:
+          secretKeyRef:
+            name: authentik-credentials
+            key: mail_tls
+    # -- Enable either use_tls or use_ssl. They can't be enabled at the same time.
+    - name: AUTHENTIK_EMAIL__USE_SSL
+      valueFrom:
+          secretKeyRef:
+            name: authentik-credentials
+            key: mail_ssl
+    # -- Connection timeout in seconds
+    - name: AUTHENTIK_EMAIL__TIMEOUT
+      valueFrom:
+          secretKeyRef:
+            name: authentik-credentials
+            key: mail_timeout
+    # -- Email 'from' address can either be in the format "foo@bar.baz" or "authentik <foo@bar.baz>"
+    - name: AUTHENTIK_EMAIL__FROM
+      valueFrom:
+          secretKeyRef:
+            name: authentik-credentials
+            key: mail_from
+
+    - name: AUTHENTIK_POSTGRESQL__USER
+      valueFrom:
+          secretKeyRef:
+            name: authentik-db-creds
+            key: username
+    
+    - name: AUTHENTIK_POSTGRESQL__PASSWORD
+      valueFrom:
+          secretKeyRef:
+            name: authentik-db-creds
+            key: password
+
+    - name: AUTHENTIK_POSTGRESQL__HOST
+      value: authentik-db-production-cnpg-v1-rw.authentik.svc.cluster.local
+            
+    - name: AUTHENTIK_POSTGRESQL__NAME
+      value: authentik
+
+    - name: AUTHENTIK_POSTGRESQL__READ_REPLICAS__0__HOST
+      value: authentik-db-production-cnpg-v1-r.authentik.svc.cluster.local
+
+    - name: AUTHENTIK_POSTGRESQL__READ_REPLICAS__0__NAME
+      value: authentik
+
+    - name: AUTHENTIK_POSTGRESQL__READ_REPLICAS__0__USER
+      valueFrom:
+          secretKeyRef:
+            name: authentik-db-creds
+            key: username
+    
+    - name: AUTHENTIK_POSTGRESQL__READ_REPLICAS__0__PASSWORD
+      valueFrom:
+          secretKeyRef:
+            name: authentik-db-creds
+            key: password
+
+    - name: AUTHENTIK_REDIS__HOST
+      value: valkey-authentik-primary.authentik.svc.cluster.local
+
+    - name: AUTHENTIK_SECRET_KEY
+      valueFrom:
+          secretKeyRef:
+            name: authentik-credentials
+            key: authentik_secret
+
+geoip:
+  enabled: true
+  existingSecret:
+    secretName: authentik-credentials
+    licenseKey: maxmind_license_key
+    accountId: maxmind_account_id
+
+redis:
+  enabled: false

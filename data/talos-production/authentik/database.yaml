@@ -1,0 +1,83 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: authentik-db-production-cnpg-v1
+  namespace: authentik
+spec:
+  description: Postgres cluster for the authentik application
+  imageName: ghcr.io/cloudnative-pg/postgres:17
+  instances: 3
+
+  monitoring:
+    enablePodMonitor: true
+
+  inheritedMetadata:
+    labels:
+      app: authentik-database
+      policy-type: "database"
+
+  storage:
+    size: 10Gi
+
+  bootstrap:
+    # recovery:
+    #   source: clusterBackup
+
+    initdb:
+      database: authentik
+      owner: authentik
+
+      secret:
+        name: authentik-db-creds
+
+  externalClusters:
+    - name: clusterBackup
+      barmanObjectStore:
+        endpointURL: https://fsn1.your-objectstorage.com
+        destinationPath: s3://talos-production-db-backup/
+        serverName: authentik-db-production-cnpg-v1
+        s3Credentials:
+          accessKeyId:
+            name: minio-creds
+            key: MINIO_ACCESS_KEY
+          secretAccessKey:
+            name: minio-creds
+            key: MINIO_SECRET_KEY
+
+  backup:
+    barmanObjectStore:
+      endpointURL: https://fsn1.your-objectstorage.com
+      destinationPath: s3://talos-production-db-backup/
+      s3Credentials:
+        accessKeyId:
+          name: minio-creds
+          key: MINIO_ACCESS_KEY
+        secretAccessKey:
+          name: minio-creds
+          key: MINIO_SECRET_KEY
+      wal:
+        compression: gzip
+      data:
+        compression: gzip
+    retentionPolicy: 30d
+
+  # handy: resources can be used to trigger a redeploy
+  resources:
+    requests:
+      memory: 600Mi
+
+  managed:
+    services:
+      disabledDefaultServices:
+        - ro
+      # additional:
+      #   - selectorType: rw
+      #     serviceTemplate:
+      #       metadata:
+      #         name: authentik-db-lb
+      #         labels:
+      #           cilium-lb-pool: postgres-pool
+      #         annotations:
+      #           external-dns.alpha.kubernetes.io/hostname: authentik.db.ottercloud.net
+      #       spec:
+      #         type: LoadBalancer
