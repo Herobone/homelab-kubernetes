@@ -34,7 +34,7 @@ podSecurityContext: {}
 
 # Default environment variables for the proxy. They are put into the environment configMap.
 env:
-  LITELLM_LOG: "INFO"
+  LITELLM_LOG: "DEBUG"
   LITELLM_MODE: "PRODUCTION"
 
 
@@ -53,9 +53,6 @@ env:
 # When needing more than one secret, use the envFromSecretRefs list below
 secretFrom:
   name: litellm-env
-
-# -- List of secrets to be used as environment variables for the proxy
-envFromSecretRefs:
 
 # -- List of extra objects to be created, will be templated
 extraObjects: []

@@ -1,0 +1,13 @@
+apiVersion: "cilium.io/v2alpha1"
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: database-pool
+  namespace: kube-system
+spec:
+  blocks:
+    - start: "10.8.8.201"
+      stop: "10.8.8.230"
+
+  serviceSelector:
+    matchLabels:
+      cilium-lb-pool: database-pool

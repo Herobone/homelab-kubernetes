@@ -5,7 +5,7 @@ metadata:
   namespace: ai
 spec:
   description: Postgres cluster for the litellm application
-  imageName: ghcr.io/cloudnative-pg/postgresql:17-standard-bookworm
+  imageName: ghcr.io/cloudnative-pg/postgresql:16-standard-bookworm
   instances: 3
 
   monitoring:
@@ -17,7 +17,7 @@ spec:
       policy-type: "database"
 
   storage:
-    size: 25Gi
+    size: 10Gi
 
   bootstrap:
     # recovery:
@@ -71,14 +71,14 @@ spec:
       disabledDefaultServices:
         - ro
         - r
-      # additional:
-      #   - selectorType: rw
-      #     serviceTemplate:
-      #       metadata:
-      #         name: litellm-db-lb
-      #         labels:
-      #           cilium-lb-pool: postgres-pool
-      #         annotations:
-      #           external-dns.alpha.kubernetes.io/hostname: litellm-db.cilium.ottercloud.net
-      #       spec:
-      #         type: LoadBalancer
+      additional:
+        - selectorType: rw
+          serviceTemplate:
+            metadata:
+              name: litellm-db-lb
+              labels:
+                cilium-lb-pool: postgres-pool
+              annotations:
+                external-dns.alpha.kubernetes.io/hostname: litellm.db.ottercloud.net
+            spec:
+              type: LoadBalancer
