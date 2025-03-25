@@ -64,21 +64,25 @@ spec:
   # handy: resources can be used to trigger a redeploy
   resources:
     requests:
-      memory: 600Mi
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
 
   managed:
     services:
       disabledDefaultServices:
         - ro
         - r
-      additional:
-        - selectorType: rw
-          serviceTemplate:
-            metadata:
-              name: litellm-db-lb
-              labels:
-                cilium-lb-pool: postgres-pool
-              annotations:
-                external-dns.alpha.kubernetes.io/hostname: litellm.db.ottercloud.net
-            spec:
-              type: LoadBalancer
+      # additional:
+      #   - selectorType: rw
+      #     serviceTemplate:
+      #       metadata:
+      #         name: litellm-db-lb
+      #         labels:
+      #           cilium-lb-pool: postgres-pool
+      #         annotations:
+      #           external-dns.alpha.kubernetes.io/hostname: litellm.db.ottercloud.net
+      #       spec:
+      #         type: LoadBalancer
