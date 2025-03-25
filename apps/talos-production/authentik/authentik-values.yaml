@@ -113,6 +113,12 @@ global:
     - name: AUTHENTIK_REDIS__HOST
       value: valkey-authentik-primary.authentik.svc.cluster.local
 
+    - name: AUTHENTIK_REDIS__PASSWORD
+      valueFrom:
+          secretKeyRef:
+            name: valkey-authentik
+            key: valkey-password
+
     - name: AUTHENTIK_SECRET_KEY
       valueFrom:
           secretKeyRef:

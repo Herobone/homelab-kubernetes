@@ -5,7 +5,7 @@ metadata:
   namespace: authentik
 spec:
   description: Postgres cluster for the authentik application
-  imageName: ghcr.io/cloudnative-pg/postgresql:17-standard-bookworm
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.4-6
   instances: 3
 
   monitoring:
