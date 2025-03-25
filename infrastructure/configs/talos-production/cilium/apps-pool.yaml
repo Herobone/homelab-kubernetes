@@ -5,7 +5,7 @@ metadata:
   namespace: kube-system
 spec:
   blocks:
-    - start: "10.8.8.100"
+    - start: "10.8.8.106"
       stop: "10.8.8.150"
 
   serviceSelector:
