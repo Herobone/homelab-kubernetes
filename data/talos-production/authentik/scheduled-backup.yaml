@@ -8,4 +8,4 @@ spec:
   schedule: "0 0 3 * * *"
   backupOwnerReference: cluster
   cluster:
-    name: authentik-db-production-cnpg-v2
+    name: authentik-db-production-cnpg-v3

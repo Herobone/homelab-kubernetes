@@ -1,7 +1,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: authentik-db-production-cnpg-v2
+  name: authentik-db-production-cnpg-v3
   namespace: authentik
 spec:
   description: Postgres cluster for the authentik application
@@ -35,7 +35,7 @@ spec:
       barmanObjectStore:
         endpointURL: https://fsn1.your-objectstorage.com
         destinationPath: s3://talos-production-db-backup/
-        serverName: authentik-db-production-cnpg-v2
+        serverName: authentik-db-production-cnpg-v3
         s3Credentials:
           accessKeyId:
             name: minio-creds

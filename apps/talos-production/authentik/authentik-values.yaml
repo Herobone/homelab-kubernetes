@@ -17,13 +17,13 @@ server:
           - auth.ottercloud.net
           
   autoscaling:
-    enabled: true
+    enabled: false
     minReplicas: 1
     maxReplicas: 3
 
-  service:
-    servicePortHttp: 9000
-    servicePortHttps: 9443
+  # service:
+    # servicePortHttp: 9000
+    # servicePortHttps: 9443
 
 global:
   env:
@@ -87,13 +87,13 @@ global:
             key: password
 
     - name: AUTHENTIK_POSTGRESQL__HOST
-      value: authentik-db-production-cnpg-v2-rw.authentik.svc.cluster.local
+      value: authentik-db-production-cnpg-v3-rw.authentik.svc.cluster.local
             
     - name: AUTHENTIK_POSTGRESQL__NAME
       value: authentik
 
     # - name: AUTHENTIK_POSTGRESQL__READ_REPLICAS__0__HOST
-    #   value: authentik-db-production-cnpg-v2-r.authentik.svc.cluster.local
+    #   value: authentik-db-production-cnpg-v3-r.authentik.svc.cluster.local
 
     # - name: AUTHENTIK_POSTGRESQL__READ_REPLICAS__0__NAME
     #   value: authentik
@@ -128,26 +128,26 @@ global:
     # - name: AUTHENTIK_REDIS__DB
     #   value: "1"
 
-    - name: AUTHENTIK_BOOTSTRAP_PASSWORD
-      valueFrom:
-          secretKeyRef:
-            name: authentik-credentials
-            key: bootstrap_password
+    # - name: AUTHENTIK_BOOTSTRAP_PASSWORD
+    #   valueFrom:
+    #       secretKeyRef:
+    #         name: authentik-credentials
+    #         key: bootstrap_password
     
-    - name: AUTHENTIK_BOOTSTRAP_TOKEN
-      valueFrom:
-          secretKeyRef:
-            name: authentik-credentials
-            key: bootstrap_token
+    # - name: AUTHENTIK_BOOTSTRAP_TOKEN
+    #   valueFrom:
+    #       secretKeyRef:
+    #         name: authentik-credentials
+    #         key: bootstrap_token
     
-    - name: AUTHENTIK_BOOTSTRAP_EMAIL
-      valueFrom:
-          secretKeyRef:
-            name: authentik-credentials
-            key: bootstrap_email
+    # - name: AUTHENTIK_BOOTSTRAP_EMAIL
+    #   valueFrom:
+    #       secretKeyRef:
+    #         name: authentik-credentials
+    #         key: bootstrap_email
 
 geoip:
-  enabled: true
+  enabled: false
   existingSecret:
     secretName: authentik-credentials
     licenseKey: maxmind_license_key
