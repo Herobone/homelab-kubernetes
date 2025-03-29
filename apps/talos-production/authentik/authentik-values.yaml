@@ -128,6 +128,24 @@ global:
     - name: AUTHENTIK_REDIS__DB
       value: "1"
 
+    - name: AUTHENTIK_BOOTSTRAP_PASSWORD
+      valueFrom:
+          secretKeyRef:
+            name: authentik-credentials
+            key: bootstrap_password
+    
+    - name: AUTHENTIK_BOOTSTRAP_TOKEN
+      valueFrom:
+          secretKeyRef:
+            name: authentik-credentials
+            key: bootstrap_token
+    
+    - name: AUTHENTIK_BOOTSTRAP_EMAIL
+      valueFrom:
+          secretKeyRef:
+            name: authentik-credentials
+            key: bootstrap_email
+
 geoip:
   enabled: true
   existingSecret:

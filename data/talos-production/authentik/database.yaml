@@ -20,10 +20,9 @@ spec:
     size: 10Gi
 
   bootstrap:
-    # recovery:
-    #   source: clusterBackup
+    recovery:
+      source: clusterBackup
 
-    initdb:
       database: authentik
       owner: authentik
 
