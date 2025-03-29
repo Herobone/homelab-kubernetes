@@ -6,4 +6,4 @@ resources:
   - secrets.yaml
   - database.yaml
   - scheduled-backup.yaml
-  - valkey-release.yaml
+  # - valkey-release.yaml

@@ -92,32 +92,32 @@ global:
     - name: AUTHENTIK_POSTGRESQL__NAME
       value: authentik
 
-    - name: AUTHENTIK_POSTGRESQL__READ_REPLICAS__0__HOST
-      value: authentik-db-production-cnpg-v2-r.authentik.svc.cluster.local
+    # - name: AUTHENTIK_POSTGRESQL__READ_REPLICAS__0__HOST
+    #   value: authentik-db-production-cnpg-v2-r.authentik.svc.cluster.local
 
-    - name: AUTHENTIK_POSTGRESQL__READ_REPLICAS__0__NAME
-      value: authentik
+    # - name: AUTHENTIK_POSTGRESQL__READ_REPLICAS__0__NAME
+    #   value: authentik
 
-    - name: AUTHENTIK_POSTGRESQL__READ_REPLICAS__0__USER
-      valueFrom:
-          secretKeyRef:
-            name: authentik-db-creds
-            key: username
+    # - name: AUTHENTIK_POSTGRESQL__READ_REPLICAS__0__USER
+    #   valueFrom:
+    #       secretKeyRef:
+    #         name: authentik-db-creds
+    #         key: username
     
-    - name: AUTHENTIK_POSTGRESQL__READ_REPLICAS__0__PASSWORD
-      valueFrom:
-          secretKeyRef:
-            name: authentik-db-creds
-            key: password
+    # - name: AUTHENTIK_POSTGRESQL__READ_REPLICAS__0__PASSWORD
+    #   valueFrom:
+    #       secretKeyRef:
+    #         name: authentik-db-creds
+    #         key: password
 
-    - name: AUTHENTIK_REDIS__HOST
-      value: valkey-authentik-primary.authentik.svc.cluster.local
+    # - name: AUTHENTIK_REDIS__HOST
+    #   value: valkey-authentik-primary.authentik.svc.cluster.local
 
-    - name: AUTHENTIK_REDIS__PASSWORD
-      valueFrom:
-          secretKeyRef:
-            name: valkey-authentik
-            key: valkey-password
+    # - name: AUTHENTIK_REDIS__PASSWORD
+    #   valueFrom:
+    #       secretKeyRef:
+    #         name: valkey-authentik
+    #         key: valkey-password
 
     - name: AUTHENTIK_SECRET_KEY
       valueFrom:
@@ -125,8 +125,8 @@ global:
             name: authentik-credentials
             key: authentik_secret
     
-    - name: AUTHENTIK_REDIS__DB
-      value: "1"
+    # - name: AUTHENTIK_REDIS__DB
+    #   value: "1"
 
     - name: AUTHENTIK_BOOTSTRAP_PASSWORD
       valueFrom:
@@ -154,4 +154,4 @@ geoip:
     accountId: maxmind_account_id
 
 redis:
-  enabled: false
+  enabled: true
