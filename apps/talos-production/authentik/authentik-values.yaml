@@ -87,13 +87,13 @@ global:
             key: password
 
     - name: AUTHENTIK_POSTGRESQL__HOST
-      value: authentik-db-production-cnpg-v1-rw.authentik.svc.cluster.local
+      value: authentik-db-production-cnpg-v2-rw.authentik.svc.cluster.local
             
     - name: AUTHENTIK_POSTGRESQL__NAME
       value: authentik
 
     - name: AUTHENTIK_POSTGRESQL__READ_REPLICAS__0__HOST
-      value: authentik-db-production-cnpg-v1-r.authentik.svc.cluster.local
+      value: authentik-db-production-cnpg-v2-r.authentik.svc.cluster.local
 
     - name: AUTHENTIK_POSTGRESQL__READ_REPLICAS__0__NAME
       value: authentik
