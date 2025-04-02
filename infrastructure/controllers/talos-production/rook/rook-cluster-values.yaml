@@ -2,7 +2,7 @@ ingress:
   dashboard:
     host: 
       name: rook.cilium.ottercloud.net
-      path: "/ceph-dashboard(/|$)(.*)"
+      path: "/"
       pathType: Prefix
     tls:
       - hosts:
@@ -28,7 +28,15 @@ cephClusterSpec:
         memory: 128Mi
         cpu: 150m
   
+  mgr:
+    modules:
+      - name: rook
+        enabled: true
+
   removeOSDsIfOutAndSafeToRemove: true
+  dashboard:
+    enabled: true
+    ssl: false
 
 cephFileSystems:
   - name: ceph-filesystem
