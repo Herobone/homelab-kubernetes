@@ -7,3 +7,4 @@ resources:
   - ingress-l2policy.yaml
   - database-pool.yaml
   - database-l2policy.yaml
+  - cert.yaml
