@@ -27,7 +27,7 @@ cgroup:
     enabled: false
   hostRoot: /sys/fs/cgroup
 
-k8sServiceHost: localhost
+k8sServiceHost: auto
 k8sServicePort: 7445
 
 hubble:
@@ -40,10 +40,11 @@ hubble:
       className: cilium
       hosts:
         - hubble.cilium.ottercloud.net
-    # service:
-      # annotations:
-      #   omni-kube-service-exposer.sidero.dev/port: "50080"
-      #   omni-kube-service-exposer.sidero.dev/label: Hubble
+      tls:
+        - hosts:
+            - hubble.cilium.ottercloud.net
+          secretName: hubble-tls-cert
+
 
 l2announcements:
   enabled: true
@@ -59,3 +60,19 @@ ingressController:
   enabled: true
   loadbalancerMode: shared
   default: true
+
+encryption:
+  # -- Enable transparent network encryption.
+  enabled: true
+  # -- Encryption method. Can be either ipsec or wireguard.
+  type: wireguard
+  # -- Enable encryption for pure node to node traffic.
+  # This option is only effective when encryption.type is set to "wireguard".
+  nodeEncryption: true
+  wireguard:
+    persistentKeepalive: 30s
+
+
+externalIPs:
+  # -- Enable ExternalIPs service support.
+  enabled: true
