@@ -20,13 +20,10 @@ spec:
     size: 10Gi
 
   bootstrap:
-    # recovery:
-      # source: clusterBackup
-
-    initdb:
+    recovery:
+      source: clusterBackup
       database: litellm
       owner: litellm
-
       secret:
         name: litellm-db-creds
 
