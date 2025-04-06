@@ -1,0 +1,7 @@
+# --- Namespace ---
+# Defines the namespace to isolate PhantomBot resources
+apiVersion: v1
+kind: Namespace
+metadata:
+  # Name of the namespace
+  name: phantombot

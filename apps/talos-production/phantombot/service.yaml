@@ -1,0 +1,23 @@
+# --- Service ---
+# Exposes the PhantomBot pod internally within the cluster
+apiVersion: v1
+kind: Service
+metadata:
+  # Service name, used by the Ingress
+  name: phantombot-service
+  # Assign this Service to the 'phantombot' namespace
+  namespace: phantombot
+  labels:
+    app: phantombot
+spec:
+  ports:
+    - protocol: TCP
+      # Port the service listens on
+      port: 80
+      # Port on the pod the service forwards traffic to
+      targetPort: 25000
+  # Selects the pods managed by the StatefulSet in the same namespace
+  selector:
+    app: phantombot
+  # Type ClusterIP is suitable for internal exposure to the Ingress
+  type: ClusterIP

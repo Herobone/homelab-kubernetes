@@ -1,0 +1,56 @@
+# --- StatefulSet ---
+# Manages the PhantomBot application pod using a manually created PVC
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: phantombot
+  # Assign this StatefulSet to the 'phantombot' namespace
+  namespace: phantombot
+spec:
+  # Ensures only one instance of PhantomBot runs
+  replicas: 1
+  # Selector to link the StatefulSet with its pods
+  selector:
+    matchLabels:
+      app: phantombot
+  # Service name used for stable network identifiers
+  # Must match the Service name and be in the same namespace
+  serviceName: phantombot-service
+  # Pod template
+  template:
+    metadata:
+      labels:
+        # Label applied to pods, used by the Service selector
+        app: phantombot
+      # The namespace field is inherited by the pod from the StatefulSet
+    spec:
+      # Defines the volumes used by the pod
+      volumes:
+        # Define a volume named 'phantombot-data'
+        - name: phantombot-data
+          # Specify that this volume uses an existing PersistentVolumeClaim
+          persistentVolumeClaim:
+            # Name of the manually created PVC defined above
+            claimName: phantombot-data-manual
+      # Defines the container running PhantomBot
+      containers:
+        - name: phantombot # Container name within the pod
+          # Image from the Docker Compose file
+          image: ghcr.io/phantombot/phantombot:latest # Use specific version if needed
+          # Port the application listens on inside the container
+          ports:
+            - containerPort: 25000
+              name: http # Port name (optional but good practice)
+          # Mounts the persistent volume (defined in spec.volumes) into the container
+          env:
+            - name: PHANTOMBOT_usehttps
+              value: "false" # Set to "true" if HTTPS is enabled
+            - name: PHANTOMBOT_proxybypasshttps
+              value: "true" # Set to "false" if HTTPS is enabled
+          volumeMounts:
+            - name: phantombot-data # Must match the volume name in spec.volumes
+              # Mount path inside the container, from Docker Compose
+              mountPath: /opt/PhantomBot_data
+      # Restart policy for containers in the pod (Always is default and desired)
+      restartPolicy: Always
+  # Removed volumeClaimTemplates section as we are using a manual PVC

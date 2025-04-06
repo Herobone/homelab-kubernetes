@@ -1,0 +1,26 @@
+# --- PersistentVolumeClaim (Manual) ---
+# Define the PVC manually. This resource MUST be created in the cluster
+# BEFORE applying the StatefulSet that uses it.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  # Name for the manually created PVC
+  name: phantombot-data-manual
+  # Ensure the PVC is in the 'phantombot' namespace
+  namespace: phantombot
+spec:
+  # Access mode: ReadWriteOnce allows mounting by a single node
+  accessModes:
+    - ReadWriteOnce
+  # Define storage requirements
+  resources:
+    requests:
+      # Adjust storage size as needed
+      storage: 5Gi
+  # Specify a StorageClass if required by your cluster setup
+  # storageClassName: your-storage-class-name
+  # --- IMPORTANT NOTE ON DATA PERSISTENCE ---
+  # Manually created PVCs are generally NOT deleted when the StatefulSet referencing them is deleted.
+  # However, the underlying PersistentVolume (PV) might still be deleted or recycled depending
+  # on its 'persistentVolumeReclaimPolicy' (e.g., Delete, Retain).
+  # For maximum data safety, ensure the PV bound to this PVC has a 'persistentVolumeReclaimPolicy: Retain'.

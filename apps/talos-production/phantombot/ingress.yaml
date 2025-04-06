@@ -1,0 +1,40 @@
+# --- Ingress ---
+# Exposes the PhantomBot service to the internet via the specified domain
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: phantombot-ingress
+  # Assign this Ingress to the 'phantombot' namespace
+  namespace: phantombot
+  annotations:
+    # --- IMPORTANT ---
+    # Annotations might be needed depending on your Ingress controller (Cilium, Nginx, Traefik, etc.)
+    # For cert-manager (if used for TLS):
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod" # Or your specific ClusterIssuer
+    # For Cilium, standard Ingress resources usually work without specific annotations,
+    # but check Cilium documentation if you encounter issues or need specific features.
+    # kubernetes.io/ingress.class: cilium # Explicitly specify if needed
+spec:
+  # TLS configuration
+  tls:
+    - hosts:
+        # Domain name for accessing PhantomBot
+        - bot.stream.ottercloud.net
+      # Name of the Kubernetes Secret containing the TLS certificate and key
+      # This secret must exist in the 'phantombot' namespace.
+      # You can create it manually or use a tool like cert-manager.
+      secretName: phantombot-tls-secret
+  # Ingress rules
+  rules:
+    - host: bot.stream.ottercloud.net # The domain name
+      http:
+        paths:
+          - path: / # Route all traffic for the host
+            pathType: Prefix # Match paths starting with /
+            backend:
+              service:
+                # Name of the Service created above (must be in the same namespace)
+                name: phantombot-service
+                port:
+                  # Port number defined in the Service
+                  number: 80 # The port the service listens on

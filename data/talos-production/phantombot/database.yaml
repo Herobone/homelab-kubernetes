@@ -1,0 +1,156 @@
+# --- MariaDB Cluster Definition ---
+# Defines the desired state of your MariaDB cluster.
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: MariaDB
+metadata:
+  name: mariadb-cluster # Name of this MariaDB instance
+  namespace: phantombot    # Deploy in this namespace
+spec:
+  # Define the root password using the Secret created above
+  rootPasswordSecretKeyRef:
+    name: mariadb-credentials
+    key: root-password
+
+  # Define the application database, user, and password using the Secret
+  database: "phantombot" # Example database name
+  username: "phantombot" # Must match 'user' key in mariadb-credentials
+  passwordSecretKeyRef:
+    name: mariadb-credentials
+    key: password # Must match 'password' key in mariadb-credentials
+
+  port: 3306
+
+  service:
+    type: ClusterIP # Internal access is usually sufficient
+    port: 3306
+
+  # Connection configuration (optional, provides connection details)
+  connection:
+    secretName: mariadb-cluster-connection # Name of the Secret to store connection info
+    secretTemplate:
+      key: dsn
+    healthCheck:
+      interval: 10s
+      retryInterval: 3s
+    params:
+      parseTime: "true"
+
+  storage:
+    size: 3Gi
+    storageClassName: ceph-block
+    resizeInUseVolumes: true
+    waitForVolumeResize: true
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      memory: 1Gi
+  
+  env:
+    - name: TZ
+      value: SYSTEM
+
+  livenessProbe:
+    exec:
+      command:
+        - bash
+        - -c
+        - mariadb -u root -p"${MARIADB_ROOT_PASSWORD}" -e "SELECT 1;"
+    periodSeconds: 5
+    timeoutSeconds: 5
+
+  readinessProbe:
+    exec:
+      command:
+        - bash
+        - -c
+        - mariadb -u root -p"${MARIADB_ROOT_PASSWORD}" -e "SELECT 1;"
+    periodSeconds: 5
+    timeoutSeconds: 5
+
+  startupProbe:
+    exec:
+      command:
+        - bash
+        - -c
+        - mariadb -u root -p"${MARIADB_ROOT_PASSWORD}" -e "SELECT 1;"
+    failureThreshold: 10
+    periodSeconds: 5
+    timeoutSeconds: 5
+
+  podDisruptionBudget:
+    maxUnavailable: 50%
+
+  updateStrategy:
+    type: ReplicasFirstPrimaryLast
+---
+
+# --- Scheduled Backup Definition ---
+# Configures automated backups to S3 storage.
+apiVersion: mariadb.mmontes.io/v1alpha1
+kind: Backup
+metadata:
+  name: mariadb-s3-backup # Name of this backup schedule
+  namespace: phantombot     # Deploy in the same namespace
+spec:
+  # Reference the MariaDB cluster to back up
+  mariaDbRef:
+    name: mariadb-cluster
+
+  # Backup schedule in Cron format (e.g., daily at 2:30 AM)
+  schedule:
+    cron: "*/10 * * * *"
+
+  maxRetention: 720h # 30 days
+
+  compression: gzip
+
+  # Storage configuration for backups
+  storage:
+    # S3 storage provider details
+    s3:
+      # S3 Bucket name derived from destinationPath
+      bucket: talos-production-db-backup
+      # Optional: path prefix within the bucket
+      prefix: phantombot-mariadb # Store backups at the root of the bucket, adjust if needed
+      # S3 endpoint URL
+      endpoint: https://fsn1.your-objectstorage.com
+      # Optional: Specify your S3 region if required by your provider
+      # Reference the Secret containing S3 credentials
+      accessKeyIdSecretKeyRef:
+        name: minio-creds
+        key: MINIO_ACCESS_KEY
+      secretAccessKeySecretKeyRef:
+        name: minio-creds
+        key: MINIO_SECRET_KEY
+      tls:
+        enabled: true
+
+
+---
+
+# --- Example Restore Definition (Optional) ---
+# Manifest to trigger a restore from a specific backup.
+# You typically apply this manually when needed.
+# apiVersion: mariadb.mmontes.io/v1alpha1
+# kind: Restore
+# metadata:
+#   name: mariadb-restore-from-s3 # Name for this restore job
+#   namespace: phantombot        # Must be in the same namespace
+# spec:
+#   # Reference the MariaDB cluster to restore TO
+#   mariaDbRef:
+#     name: mariadb-cluster
+#
+#   # Reference the Backup resource definition (restores the LATEST successful backup from this schedule)
+#   # OR reference a specific Backup CR instance created by the schedule (e.g., name: mariadb-s3-backup-2025-04-06-xxxx)
+#   backupRef:
+#     name: mariadb-s3-backup
+#
+#   # Maximum number of retries for the restore job
+#   backoffLimit: 5
+#
+#   # Optional: Specify point-in-time recovery target
+#   # targetRecoveryTime: "2025-04-05T10:00:00Z"
