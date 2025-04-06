@@ -89,7 +89,7 @@ spec:
 
 # --- Scheduled Backup Definition ---
 # Configures automated backups to S3 storage.
-apiVersion: mariadb.mmontes.io/v1alpha1
+apiVersion: k8s.mariadb.com/v1alpha1
 kind: Backup
 metadata:
   name: mariadb-s3-backup # Name of this backup schedule
