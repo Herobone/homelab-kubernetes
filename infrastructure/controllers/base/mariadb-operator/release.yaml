@@ -1,0 +1,32 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: mariadb-operator-crds
+  namespace: mariadb-operator
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: mariadb-operator-crds
+      sourceRef:
+        kind: HelmRepository
+        name: mariadb-operator
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: mariadb-operator
+  namespace: mariadb-operator
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: mariadb-operator
+      sourceRef:
+        kind: HelmRepository
+        name: mariadb-operator
+  values:
+    webhook:
+      cert:
+        certManager:
+          enabled: true

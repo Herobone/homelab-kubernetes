@@ -6,3 +6,4 @@ resources:
   - kubelet-serving-cert-approver
   - metrics-server
   - cloudnativepg
+  - mariadb-operator
