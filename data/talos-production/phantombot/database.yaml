@@ -20,9 +20,9 @@ spec:
 
   port: 3306
 
-  service:
-    type: ClusterIP # Internal access is usually sufficient
-    port: 3306
+  # service:
+  #   type: ClusterIP # Internal access is usually sufficient
+  #   port: 3306
 
   # Connection configuration (optional, provides connection details)
   connection:

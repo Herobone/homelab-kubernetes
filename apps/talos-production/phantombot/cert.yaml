@@ -1,7 +1,7 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: openwebui-tls-cert
+  name: phantombot-tls-secret
   namespace: phantombot
 spec:
   secretName: phantombot-tls-secret
