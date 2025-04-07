@@ -20,10 +20,6 @@ spec:
 
   port: 3306
 
-  # service:
-  #   type: ClusterIP # Internal access is usually sufficient
-  #   port: 3306
-
   # Connection configuration (optional, provides connection details)
   connection:
     secretName: mariadb-cluster-connection # Name of the Secret to store connection info
@@ -101,9 +97,9 @@ spec:
 
   # Backup schedule in Cron format (e.g., daily at 2:30 AM)
   schedule:
-    cron: "*/10 * * * *"
+    cron: "0 * * * *"
 
-  maxRetention: 720h # 30 days
+  maxRetention: 366h # 14 days
 
   compression: gzip
 
@@ -116,7 +112,7 @@ spec:
       # Optional: path prefix within the bucket
       prefix: phantombot-mariadb # Store backups at the root of the bucket, adjust if needed
       # S3 endpoint URL
-      endpoint: https://fsn1.your-objectstorage.com
+      endpoint: fsn1.your-objectstorage.com
       # Optional: Specify your S3 region if required by your provider
       # Reference the Secret containing S3 credentials
       accessKeyIdSecretKeyRef:
