@@ -4,5 +4,13 @@
     "fileMatch": [
       "\\.yaml$"
     ]
+  },
+  "flux": {
+    "managerFilePatterns": ["/\\.yaml$/"]
+  },
+  "helm-values": {
+    "managerFilePatterns": [
+      "/(^|/)(.+)?-?values\\.ya?ml$/"
+    ]
   }
 }

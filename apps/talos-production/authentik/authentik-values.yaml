@@ -147,7 +147,7 @@ global:
     #         key: bootstrap_email
 
 geoip:
-  enabled: false
+  enabled: true
   existingSecret:
     secretName: authentik-credentials
     licenseKey: maxmind_license_key
