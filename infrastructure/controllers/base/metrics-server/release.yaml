@@ -12,6 +12,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: metrics-server
+        namespace: default
   interval: 1m0s
   releaseName: metrics-server
   targetNamespace: kube-system
