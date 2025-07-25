@@ -36,7 +36,7 @@ spec:
       containers:
         - name: phantombot # Container name within the pod
           # Image from the Docker Compose file
-          image: ghcr.io/phantombot/phantombot:3.14.7.2 # Use specific version if needed
+          image: ghcr.io/phantombot/phantombot:3.14.8.2 # Use specific version if needed
           # Port the application listens on inside the container
           ports:
             - containerPort: 25000
